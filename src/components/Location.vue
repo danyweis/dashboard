@@ -1,8 +1,16 @@
 <template>
   <div>
-    <h2>My location</h2>
-    <p>52.14627 -7.84274</p>
-    <p>{{latitude}} and {{longitude}}</p>
+    <h3>My location:</h3>
+
+    <h2>{{ chosenLocation }}</h2>
+    <div v-if="changeLocation">
+      <input v-model="location" @keyup.enter="changeLocationField" />
+      <br />
+    </div>
+    <button @click="changeLocationField">
+      Edit Location
+      <i class="fas fa-pen"></i>
+    </button>
   </div>
 </template>
 
@@ -10,28 +18,36 @@
 export default {
   data() {
     return {
-      latitude: 0,
-      longitude: 0
+      changeLocation: false,
+      url: "http://api.openweathermap.org/data/2.5/weather?q=",
+      key: "&appid={your api key}",
+      location: "",
+      chosenLocation: "",
     };
   },
   methods: {
-    success(position) {
-      let currentPos = position.coords;
-      console.log(currentPos);
-      this.latitude = currentPos.latitude;
-      this.longitude = currentPos.longitude;
+    changeLocationField() {
+      this.changeLocation = !this.changeLocation;
+      this.chosenLocation = this.location;
+      this.location = "";
+      if (!this.changeLocation) {
+        this.getLongLat();
+      }
     },
-    error(err) {
-      console.error(`The Error: ${err}`);
-    }
+    getLongLat() {
+      let theUrl = this.url + this.chosenLocation + this.key;
+      console.log(theUrl);
+      this.axios
+        .get(`${this.url}${this.chosenLocation}${this.key}`)
+        // .then((response) => response.json())
+        .then((result) => this.gottenData(result));
+      // .catch(err => console.error(err));
+    },
+    gottenData(result) {
+      console.log(result);
+    },
   },
-  created() {
-    navigator.geolocation.getCurrentPosition(this.success, this.error, {
-      timeout: 5000
-    });
-  }
 };
 </script>
 
-<style>
-</style>
+<style></style>

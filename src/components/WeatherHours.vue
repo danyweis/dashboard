@@ -1,7 +1,14 @@
-<template></template>
+<template>
+  <p>{{latitude}} and {{longitude}}</p>
+</template>
 
 <script>
-export default {};
+export default {
+  props: {
+    latitude: Number,
+    longitude: Number
+  }
+};
 </script>
 
 <style>

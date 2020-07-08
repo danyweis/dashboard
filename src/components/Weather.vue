@@ -1,7 +1,7 @@
 <template>
   <div class="weather-component">
     <Location />
-    <div>weather</div>
+    <WeatherHours />
     <Time />
   </div>
 </template>
@@ -9,11 +9,17 @@
 <script>
 import Time from "./Time.vue";
 import Location from "./Location.vue";
+import WeatherHours from "./WeatherHours.vue";
 export default {
   components: {
     Time,
-    Location
-  }
+    Location,
+    WeatherHours
+  },
+  data() {
+    return {};
+  },
+  methods: {}
 };
 </script>
 
