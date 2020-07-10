@@ -1,6 +1,6 @@
 <template>
   <div class="weather-component">
-    <Location />
+    <Location @apiResult="test" />
     <WeatherHours />
     <Time />
   </div>
@@ -17,9 +17,18 @@ export default {
     WeatherHours
   },
   data() {
-    return {};
+    return {
+      townData: ""
+    };
   },
-  methods: {}
+  methods: {
+    test(payload) {
+      this.townData = payload.result;
+      console.log("yes");
+      console.log(this.townData.data.coord.lon);
+      console.log(this.townData.data.coord.lat);
+    }
+  }
 };
 </script>
 

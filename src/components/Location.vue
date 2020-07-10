@@ -20,9 +20,10 @@ export default {
     return {
       changeLocation: false,
       url: "http://api.openweathermap.org/data/2.5/weather?q=",
-      key: "&appid={your api key}",
+      // key: "&appid={your api key}",
+      key: "&appid=87ed9a66fdb379ba08f553e8d288eb52",
       location: "",
-      chosenLocation: "",
+      chosenLocation: ""
     };
   },
   methods: {
@@ -35,18 +36,16 @@ export default {
       }
     },
     getLongLat() {
-      let theUrl = this.url + this.chosenLocation + this.key;
-      console.log(theUrl);
       this.axios
         .get(`${this.url}${this.chosenLocation}${this.key}`)
         // .then((response) => response.json())
-        .then((result) => this.gottenData(result));
+        .then(result => this.gottenData(result));
       // .catch(err => console.error(err));
     },
     gottenData(result) {
-      console.log(result);
-    },
-  },
+      this.$emit("apiResult", { result: result });
+    }
+  }
 };
 </script>
 
