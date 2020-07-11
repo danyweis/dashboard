@@ -1,27 +1,32 @@
 <template>
-  <div>
-    <h3>My location:</h3>
+  <div class="weatherLocation-component">
+    <h5>My location:</h5>
 
-    <h2>{{ chosenLocation }}</h2>
+    <p>{{ chosenLocation.toUpperCase() }}</p>
     <div v-if="changeLocation">
-      <input v-model="location" @keyup.enter="changeLocationField" />
+      <input v-model="location" @keyup.enter="changeLocationField" placeholder="Town..." />
       <br />
     </div>
-    <button @click="changeLocationField">
-      Edit Location
-      <i class="fas fa-pen"></i>
-    </button>
+    <div class="buttons">
+      <button @click="changeLocationField">
+        <i class="fas fa-pen"></i>
+      </button>
+      <button class="refresh" v-if="chosenLocation != ''" @click="getLongLat">
+        <i class="fas fa-sync-alt"></i>
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    apiKey: String
+  },
   data() {
     return {
       changeLocation: false,
       url: "http://api.openweathermap.org/data/2.5/weather?q=",
-      // key: "&appid={your api key}",
-      key: "&appid=87ed9a66fdb379ba08f553e8d288eb52",
       location: "",
       chosenLocation: ""
     };
@@ -36,11 +41,11 @@ export default {
       }
     },
     getLongLat() {
+      console.log("ok");
       this.axios
-        .get(`${this.url}${this.chosenLocation}${this.key}`)
-        // .then((response) => response.json())
-        .then(result => this.gottenData(result));
-      // .catch(err => console.error(err));
+        .get(`${this.url}${this.chosenLocation}${this.apiKey}`)
+        .then(result => this.gottenData(result))
+        .catch(err => console.error(err));
     },
     gottenData(result) {
       this.$emit("apiResult", { result: result });
